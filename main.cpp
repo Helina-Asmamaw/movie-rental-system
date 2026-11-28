@@ -158,6 +158,39 @@ void printMenu(){
         }         
         }
       }
+      void deleteMovie(){
+        int index = searchMovie();
+        if (index == -1){
+            return;
+        }
+        for (int j =index; j< moviecount -1;movies[j];j++){
+            movies[j]=movies[j+1];
+        }
+        moviecount--;
+        cout<<"Movie deleted! \n";
+      }
+      void sortMovie(){
+        if (moviecount == 0){
+            cout<<"No movies to sort. \n";
+            return;
+        }
+        int option;
+        cout<<"Sort by 1.ID or 2.Title: ";
+        cin>>option;
+        if (option != 1 && option !=2){
+            cout<<"Invalid option! \n";
+            return;
+        }
+        for(int i =0; i<moviecount-1;i++){
+            for (int j= i+1; j<moviecount;j++){
+                if((option == 1 && movies[j].id<movies[i].id)|| (option==2 && movies[j].title<movies[i].title)){
+                    swap(movies[i],movies[j]);
+                }
+            }
+        }
+        cout<<"Movies sorted!\n";
+        displayMovies();
+      }
 
 
 
@@ -183,9 +216,9 @@ void printMenu(){
             break;
             case 4: updateMovie();
             break;
-            case 5:cout<<"Delete chosen\n";
+            case 5: deleteMovie();
             break;
-            case 6:cout<<"sort chosen\n";
+            case 6:sortMovie();
             break;
             case 7:cout<<"exit chosen\n";
             break;
