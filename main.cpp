@@ -181,13 +181,25 @@ void printMenu(){
             cout<<"Invalid option! \n";
             return;
         }
-        for(int i =0; i<moviecount-1;i++){
-            for (int j= i+1; j<moviecount;j++){
-                if((option == 1 && movies[j].id<movies[i].id)|| (option==2 && movies[j].title<movies[i].title)){
+        int order;
+        cout<<"1. Ascending or 2. Descending: ";
+        cin>>order;
+        if (order != 1 &&  order !=2){
+            cout<<"Invalid order! \n";
+            return;
+        }
+        for (int i=0; i<moviecount-1;i++){
+            for (int j=i+1; j<moviecount; j++){
+                movie first= movies[i];
+                movie second= movies[j];
+                if( (order ==1 && second.id<first.id)|| (option ==2 && second.title<first.title)){
                     swap(movies[i],movies[j]);
                 }
             }
         }
+        
+        
+        
         cout<<"Movies sorted!\n";
         displayMovies();
       }
