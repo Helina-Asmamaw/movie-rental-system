@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <string>
 #include <iomanip>
 using namespace std;
 
@@ -30,35 +31,7 @@ void printMenu(){
 
 }
 
-int main(){
-     int choice;
-    do{
-        printMenu();
-       
-        cin>>choice;
-        switch(choice){
-            case 1:cout<<"insert New chosen\n";
-            break;
-            case 2:cout<<"Dispalay chosen\n";
-            break;
-            case 3:cout<<"Search chosen\n";
-            break;
-            case 4:cout<<"Update chosen\n";
-            break;
-            case 5:cout<<"Delete chosen\n";
-            break;
-            case 6:cout<<"sort chosen\n";
-            break;
-            case 7:cout<<"exit chosen\n";
-            break;
-            default:cout<<"Invalid choice, try again\n";
-            break;
 
-
-        }
-     } while (choice != 7);
-     return 0;
-    }
 
      bool insertMovie() {
         if (moviecount >= MAX_MOVIES){
@@ -69,7 +42,7 @@ int main(){
         movie m;
         cout<<"Enter movie ID: ";
         cin>>m.id;
-        cin.ignore();
+        cin.ignore(1000, '\n');
         cout<<"Enter movie title: ";
         getline(cin, m.title);
         cout<<"Enter movie genre:  ";
@@ -84,7 +57,7 @@ int main(){
         movies[moviecount]=m;
         moviecount++;
         cout<<"Movie added!\n";
-        return 0;
+        return true;
 
      }
       void displayMovies(){
@@ -115,7 +88,115 @@ int main(){
             <<"\n";
         }
       }
-    
+      int searchMovie(){
+        int option;
+        cout<<"search movie by 1.ID or 2.Title:";
+        cin>>option;
+        int id =0;
+        string title;
+        if (option==1){
+            cout<<"Enter movie ID:";
+            cin>>id;
+        }
+        else if(option==2){
+            cout<<"Enter movie title:";
+            cin.ignore(1000, '\n');
+            getline(cin,title);
+        }
+        else{
+            cout<<"Invalid option!\n";
+            return -1;
+        }
+        for(int i=0; i<moviecount; i++){
+            if((option==1 && movies[i].id==id) ||
+        (option==2 && movies[i].title==title)){
+            cout<<"found: "<<movies[i].title<<"(" <<movies[i].year<<"), Id"<<movies[i].id<<"\n";
+            return i;
+        }
+        }
+        cout<<"Movie not found!\n";
+        return -1;
+
+
+      }
+      void updateMovie(){
+        int index = searchMovie();
+        if(index== -1){
+            return;
+        }
+        int field;
+        cout<<"Update 1.Title 2.Genre 3.Year 4. Rating 5.Price 6.Availability: ";
+        cin>>field;
+        switch(field){
+            case 1: cout<<"New title: ";
+              cin.ignore(1000,'\n');
+              getline(cin,movies[index].title);
+              break;
+        case 2: cout<<"New genre: ";
+             cin.ignore(1000,'\n');
+             getline(cin,movies[index].genre);
+             break;
+        case 3: cout<<"New year: ";
+             cin>>movies[index] .year;
+             break;
+        case 4: cout<<"New rating: ";
+             cin>>movies[index].rating;
+             break;
+        case 5 : cout<<"New price: ";
+        cin>>movies[index].price;
+        break;
+        case 6:{
+            int status;
+            cout<<"1.Available 0.Rented:  ";
+            cin>>status;
+            if(status != 0 && status != 1){
+                cout<<"Invalid status!\n";
+                return;
+            }
+            movies[index].available = (status == 1);
+            break;
+        }         
+        }
+      }
+
+
+
+
+    int main(){
+     int choice;
+    do{
+        printMenu();
+       
+        if (!(cin>>choice)){
+            cin.clear();
+            cin.ignore(1000, '\n');
+            cout<<"please enter a  valid number\n";
+            choice=0;
+            continue;
+        }
+        switch(choice){
+            case 1: insertMovie();
+            break;
+            case 2: displayMovies();
+            break;
+            case 3: searchMovie();
+            break;
+            case 4: updateMovie();
+            break;
+            case 5:cout<<"Delete chosen\n";
+            break;
+            case 6:cout<<"sort chosen\n";
+            break;
+            case 7:cout<<"exit chosen\n";
+            break;
+            default:cout<<"Invalid choice, try again\n";
+            break;
+
+        }
+     } while (choice != 7);
+     return 0;
+    }
+
     
 
 
